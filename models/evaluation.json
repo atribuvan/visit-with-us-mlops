@@ -1,0 +1,104 @@
+{
+  "dataset_rows_after_cleaning": 4128,
+  "feature_count": 18,
+  "positive_rate": 0.1930717054263566,
+  "train_rows": 3302,
+  "test_rows": 826,
+  "selected_model": "random_forest",
+  "metrics": {
+    "model": "random_forest",
+    "accuracy": 0.8983050847457628,
+    "precision": 0.8099173553719008,
+    "recall": 0.6163522012578616,
+    "f1": 0.7,
+    "roc_auc": 0.9486483173507586,
+    "average_precision": 0.8389215641561786
+  },
+  "all_model_metrics": [
+    {
+      "model": "logistic_regression",
+      "accuracy": 0.7324455205811138,
+      "precision": 0.39666666666666667,
+      "recall": 0.7484276729559748,
+      "f1": 0.5185185185185186,
+      "roc_auc": 0.819467624678227,
+      "average_precision": 0.5926634693424553
+    },
+    {
+      "model": "random_forest",
+      "accuracy": 0.8983050847457628,
+      "precision": 0.8099173553719008,
+      "recall": 0.6163522012578616,
+      "f1": 0.7,
+      "roc_auc": 0.9486483173507586,
+      "average_precision": 0.8389215641561786
+    },
+    {
+      "model": "extra_trees",
+      "accuracy": 0.9007263922518159,
+      "precision": 0.7421383647798742,
+      "recall": 0.7421383647798742,
+      "f1": 0.742138364779874,
+      "roc_auc": 0.9409257635333277,
+      "average_precision": 0.8267010006603405
+    }
+  ],
+  "classification_report": {
+    "0": {
+      "precision": 0.9134751773049645,
+      "recall": 0.9655172413793104,
+      "f1-score": 0.9387755102040816,
+      "support": 667.0
+    },
+    "1": {
+      "precision": 0.8099173553719008,
+      "recall": 0.6163522012578616,
+      "f1-score": 0.7,
+      "support": 159.0
+    },
+    "accuracy": 0.8983050847457628,
+    "macro avg": {
+      "precision": 0.8616962663384327,
+      "recall": 0.790934721318586,
+      "f1-score": 0.8193877551020408,
+      "support": 826.0
+    },
+    "weighted avg": {
+      "precision": 0.8935409234461787,
+      "recall": 0.8983050847457628,
+      "f1-score": 0.8928126698621336,
+      "support": 826.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      644,
+      23
+    ],
+    [
+      61,
+      98
+    ]
+  ],
+  "feature_columns": [
+    "Age",
+    "TypeofContact",
+    "CityTier",
+    "DurationOfPitch",
+    "Occupation",
+    "Gender",
+    "NumberOfPersonVisiting",
+    "NumberOfFollowups",
+    "ProductPitched",
+    "PreferredPropertyStar",
+    "MaritalStatus",
+    "NumberOfTrips",
+    "Passport",
+    "PitchSatisfactionScore",
+    "OwnCar",
+    "NumberOfChildrenVisiting",
+    "Designation",
+    "MonthlyIncome"
+  ],
+  "mlflow_tracking": "logged"
+}

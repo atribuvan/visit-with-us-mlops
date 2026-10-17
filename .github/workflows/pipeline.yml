@@ -1,0 +1,62 @@
+name: Tourism MLOps CI-CD
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  train-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: Train and evaluate models
+        run: python src/train.py
+      - name: Smoke tests
+        run: pytest -q
+      - name: Upload model and evaluation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: tourism-model-and-metrics
+          path: |
+            models/tourism_model.joblib
+            models/evaluation.json
+            models/experiment_results.csv
+  deploy-huggingface:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: train-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deployment dependencies
+        run: pip install -r requirements.txt huggingface_hub
+      - name: Train model for deployment
+        run: python src/train.py
+      - name: Push Streamlit Space files
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          token = os.environ.get("HF_TOKEN")
+          space = os.environ.get("HF_SPACE")
+          if not token or not space:
+              raise SystemExit("Configure GitHub secret HF_TOKEN and variable HF_SPACE=username/space-name.")
+          api = HfApi(token=token)
+          api.create_repo(repo_id=space, repo_type="space", space_sdk="streamlit", exist_ok=True, private=False)
+          for path in ["app.py", "requirements.txt", "README.md", "models/tourism_model.joblib", "models/evaluation.json"]:
+              api.upload_file(path_or_fileobj=path, path_in_repo=path, repo_id=space, repo_type="space", commit_message="Deploy updated tourism model")
+          PY
